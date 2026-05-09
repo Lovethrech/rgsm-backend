@@ -108,47 +108,47 @@ class RGSMSimulator:
                 return zone_name
         return "General_Campus_Area"
 
-    async def generate_events(self, num_students: int=1000, duration: int=3600):
-        """Simulate student movement and send events to backend"""
-        env=simpy.Environment()
+async def generate_events(self, num_students: int=1000, duration: int=3600):
+    """Simulate student movement and send events to backend"""
+    env=simpy.Environment()
 
-        for student_id in range(num_students):
-            env.process(self.student_movement(env, student_id))
+    for student_id in range(num_students):
+        env.process(self.student_movement(env, student_id))
 
-        print(f"🚀 Starting RGSM Simualtion with {num_students} students for {duration} seconds...")
-        env.run(until=duration)
-        print(f"✅Simulation completed successfully!")
+    print(f"🚀 Starting RGSM Simualtion with {num_students} students for {duration} seconds...")
+    env.run(until=duration)
+    print(f"✅Simulation completed successfully!")
 
-    async def student_movement(self, env, student_id):
-        while True:
-            reader_id=random.choice(self.readers)
-            timestamp=datetime.now().isoformat()
+def student_movement(self, env, student_id):
+    while True:
+        reader_id=random.choice(self.readers)
+        timestamp=datetime.now().isoformat()
 
-            event={
-                "timestamp": timestamp,
-                "reader_id": reader_id,
-                "student_uid" : f"STU{student_id:06d}",
-                "zone":self.get_zone_from_reader(reader_id)
-            }
-        # Send to FASTAPI endpoint
-        asyncio.create_task(self.send_event(event))
+        event={
+            "timestamp": timestamp,
+            "reader_id": reader_id,
+            "student_uid" : f"STU{student_id:06d}",
+            "zone":self.get_zone_from_reader(reader_id)
+        }
+    # Send to FASTAPI endpoint
+    asyncio.create_task(self.send_event(event))
 
-        # Student moves every 15-120 seconds
-        yield env.timeout(random.uniform(15,120)) 
+    # Student moves every 15-120 seconds
+    yield env.timeout(random.uniform(15,120)) 
 
-    async def send_event(self, event: dict):
-        """Send event to the FastAPI endpoint"""
-        try:
-            async with asyncio.timeout(5):  # Prevent hanging
-                response = await asyncio.get_running_loop().run_in_executor(
-                    None, 
-                    lambda: requests.post(
-                        "http://127.0.0.1:8000/api/events", 
-                        json=event, 
-                        timeout=3
-                    )
+async def send_event(self, event: dict):
+    """Send event to the FastAPI endpoint"""
+    try:
+        async with asyncio.timeout(5):  # Prevent hanging
+            response = await asyncio.get_running_loop().run_in_executor(
+                None, 
+                lambda: requests.post(
+                    "http://127.0.0.1:8000/api/events", 
+                    json=event, 
+                    timeout=3
                 )
-                if response.status_code != 200:
-                    print(f"⚠️ Failed to send event: {response.status_code}")
-        except Exception as e:
-            print(f"⚠️ Event send failed: {e}")
+            )
+            if response.status_code != 200:
+                print(f"⚠️ Failed to send event: {response.status_code}")
+    except Exception as e:
+        print(f"⚠️ Event send failed: {e}")
