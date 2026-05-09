@@ -119,7 +119,7 @@ class RGSMSimulator:
         env.run(until=duration)
         print(f"✅Simulation completed successfully!")
 
-    def student_movement(self, env, student_id):
+    async def student_movement(self, env, student_id):
         while True:
             reader_id=random.choice(self.readers)
             timestamp=datetime.now().isoformat()
@@ -145,7 +145,7 @@ class RGSMSimulator:
                 lambda: requests.post(
                     "http://127.0.0.1:8000/api/events", 
                     json=event, 
-                    timeout=5
+                    timeout=3
                 )
             )
             if response.status_code != 200:

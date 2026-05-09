@@ -119,7 +119,7 @@ class RGSMSimulator:
         env.run(until=duration)
         print(f"✅Simulation completed successfully!")
 
-    def student_movement(self, env, student_id):
+    async def student_movement(self, env, student_id):
         while True:
             reader_id=random.choice(self.readers)
             timestamp=datetime.now().isoformat()
@@ -140,15 +140,15 @@ class RGSMSimulator:
         """Send event to the FastAPI endpoint"""
         try:
             # async with asyncio.timeout(5):  # Prevent hanging
-            response = await asyncio.get_running_loop().run_in_executor(
-                None, 
-                lambda: requests.post(
-                    "http://127.0.0.1:8000/api/events", 
-                    json=event, 
-                    timeout=5
+                response = await asyncio.get_running_loop().run_in_executor(
+                    None, 
+                    lambda: requests.post(
+                        "http://127.0.0.1:8000/api/events", 
+                        json=event, 
+                        timeout=3
+                    )
                 )
-            )
-            if response.status_code != 200:
-                print(f"⚠️ Failed to send event: {response.status_code}")
+                if response.status_code != 200:
+                    print(f"⚠️ Failed to send event: {response.status_code}")
         except Exception as e:
             print(f"⚠️ Event send failed: {e}")

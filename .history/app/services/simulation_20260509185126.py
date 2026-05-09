@@ -119,7 +119,7 @@ class RGSMSimulator:
         env.run(until=duration)
         print(f"✅Simulation completed successfully!")
 
-    def student_movement(self, env, student_id):
+    async def student_movement(self, env, student_id):
         while True:
             reader_id=random.choice(self.readers)
             timestamp=datetime.now().isoformat()
