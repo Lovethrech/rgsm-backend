@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fa
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import events
 from .services.simulation import RGSMSimulator

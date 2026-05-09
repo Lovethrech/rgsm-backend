@@ -6,7 +6,7 @@ import uvicorn
 import asyncio
 
 app=FastAPI(
-    title="RGSM - RFID Geofence Security Model",
+    title="RGSM - RFID Genfence Security Model",
     description= "A Real-Time RFID-Based Genfence Security Model for University Campuses."
                 "This system simulates student movement across campus zones using RFID readers,"
                 "processes events in real-time, and applies security rules to detect unauthorized access.",
@@ -34,7 +34,7 @@ simulator=RGSMSimulator()
 async def root():
     return {
         "message" : "RGSM Backend is Running - Simulation Active ✅",
-        "simulation_status": "Ready",
+        "simulation_status": "Running",
         "total_readers": len(simulator.readers),
         "total_zones": len(simulator.zones)
     }
@@ -48,8 +48,7 @@ async def start_simulation(num_students: int=1000, duration: int=3600):
     return {
         "status": "Simulation started",
         "num_students": num_students,
-        "duration_seconds": duration,
-        "message":"Check terminal for simulation logs and /api/events/stream for live events"
+        "duration_seconds": duration
     }
 
 if __name__=="__main__":

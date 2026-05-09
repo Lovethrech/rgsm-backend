@@ -49,7 +49,7 @@ async def start_simulation(num_students: int=1000, duration: int=3600):
         "status": "Simulation started",
         "num_students": num_students,
         "duration_seconds": duration,
-        "message":"Check terminal for simulation logs and /api/events/stream for live events"
+        "message":"Check terminal for simulation logs and /api/events/stream"
     }
 
 if __name__=="__main__":
