@@ -13,7 +13,7 @@ app=FastAPI(
     version="1.0.0",
     contact={
         "name": "Olaonipekun Dolapo Rachael",
-        "email": "rachealdolapo45@gmail.com"
+        "email": "rachealdolapo45@gmail.com
     }
 )
 
