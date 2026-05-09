@@ -57,13 +57,13 @@ async def receive_event(event: RFIDEvent):
         }
 
     except Exception as e:
-        print(f"Error processing event:, {str(e)}")
+        print(f"Error processing event:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
 async def apply_security_rules(event: RFIDEvent) -> str:
-    # conn=get_db_connection()
-    # cursor=conn.cursor()
+    conn=get_db_connection()
+    cursor=conn.cursor()
 
     # Examples of JSON rules stored in database
     rules=[
@@ -97,9 +97,9 @@ async def apply_security_rules(event: RFIDEvent) -> str:
 
     for rule in rules:
         if event.zone == rule["zone"]:
-            start_hour, end_hour = rule["allowed_hour"]
-            if current_hour < start_hour or current_hour > end_hour:
-                return f"DENIED - Outside Allowed Time ({start_hour} - {end_hour})"
+            if event.zone==rule["zone"]:
+                if current_hour < rule["allowed_hour"][0] or current_hour > rule["allowed_hour"][1]:
+                    return f"DENIED - Outside Alloed Time ({rule['allowed_hour'][0]} - {rule['allowed_hour'][1]})"
     return "ALLOWED"
 
 @router.get("/events/stream")
@@ -113,5 +113,5 @@ async def event_stream():
                 for event in new_events:
                     yield f"data: {json.dumps(event)}\n\n"
                 last_index = len(latest_events)
-            await asyncio.sleep(0.8)   # Check frequently for smooth real-time feel
+            await asyncio.sleep(1) #Check every second for new events
     return StreamingResponse(event_generator(), media_type="text/event-stream")

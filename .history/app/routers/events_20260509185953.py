@@ -97,9 +97,9 @@ async def apply_security_rules(event: RFIDEvent) -> str:
 
     for rule in rules:
         if event.zone == rule["zone"]:
-            start_hour, end_hour = rule["allowed_hour"]
-            if current_hour < start_hour or current_hour > end_hour:
-                return f"DENIED - Outside Allowed Time ({start_hour} - {end_hour})"
+            if event.zone==rule["zone"]:
+                if current_hour < rule["allowed_hour"][0] or current_hour > rule["allowed_hour"][1]:
+                    return f"DENIED - Outside Alloed Time ({rule['allowed_hour'][0]} - {rule['allowed_hour'][1]})"
     return "ALLOWED"
 
 @router.get("/events/stream")
