@@ -48,7 +48,7 @@ def get_geofences_for_reader(reader_id: str) -> list[dict[str, Any]]:
             select gz.*
             from public.geofence_zones gz
             join public.geofence_reader_map grm
-                on grm.geofence_id = gz.id
+              on grm.geofence_id = gz.id
             where grm.reader_id = %s
             """,
             (reader_id,),
@@ -70,12 +70,12 @@ def insert_detection_event(
         cursor.execute(
             """
             insert into public.detection_events (
-                organization_id,
-                reader_id,
-                tag_uid,
-                event_type,
-                occurred_at,
-                payload
+              organization_id,
+              reader_id,
+              tag_uid,
+              event_type,
+              occurred_at,
+              payload
             )
             values (%s, %s, %s, %s, %s, %s)
             returning id
