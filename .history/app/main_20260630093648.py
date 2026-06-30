@@ -66,15 +66,7 @@ async def start_simulation(num_students: int = 100, duration: int = 300):
         "message": "Simulation is sending RFID events to Supabase through FastAPI.",
     }
 
-@app.post("/api/simulation/start")
-async def start_simulation(num_students: int = 20, duration: int = 120):
-    asyncio.create_task(simulator.generate_events(num_students, duration))
 
-    return {
-        "status": "simulation_started",
-        "num_students": num_students,
-        "duration_seconds": duration
-    }
 
 
 if __name__ == "__main__":
