@@ -12,7 +12,7 @@ DATABASE_URL = os.getenv("SUPABASE_DB_URL")
 if not DATABASE_URL:
     raise RuntimeError("SUPABASE_DB_URL is missing. Add it to your .env file.")
 
-print("DATABASE_URL:", DATABASE_URL)
+
 
 pool = SimpleConnectionPool(
     minconn=1,
