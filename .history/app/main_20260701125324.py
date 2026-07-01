@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import events
 from app.routers import simulation
+from app.routers import events
 from app.services.simulation import RGSMSimulator
 
 load_dotenv()
@@ -42,7 +42,6 @@ app.add_middleware(
 )
 
 app.include_router(events.router, prefix="/api")
-app.include_router(simulation.router, prefix="/api")
 
 simulator = RGSMSimulator()
 

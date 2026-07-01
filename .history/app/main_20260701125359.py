@@ -42,7 +42,6 @@ app.add_middleware(
 )
 
 app.include_router(events.router, prefix="/api")
-app.include_router(simulation.router, prefix="/api")
 
 simulator = RGSMSimulator()
 
