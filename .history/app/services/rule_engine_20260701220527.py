@@ -72,8 +72,8 @@ def evaluate_access_rule(
     zone_type = normalize(geofence.get("zone_type"))
     rules = geofence.get("rules") or {}
     lockdown = lockdown or {}
-    lockdown_enabled = bool(lockdown.get("enabled"))
-    lockdown_reason = lockdown.get("reason") or "Emergency lockdown is active"
+lockdown_enabled = bool(lockdown.get("enabled"))
+lockdown_reason = lockdown.get("reason") or "Emergency lockdown is active"
 
     # 1. Unknown RFID tag
     if not student:
@@ -103,36 +103,6 @@ def evaluate_access_rule(
     allowed_gender = normalize(rules.get("allowed_gender"))
     start_time = rules.get("time_start")
     end_time = rules.get("time_end")
-
-        # Emergency lockdown restriction
-    if lockdown_enabled:
-        allowed_during_lockdown = [
-            "security",
-            "university_admin",
-            "global_admin",
-        ]
-
-        if not student:
-            return {
-                "decision": "alert",
-                "severity": "critical",
-                "reason": f"Unknown RFID tag detected during emergency lockdown at {zone_name}.",
-                "alert_type": "LOCKDOWN_UNKNOWN_RFID_TAG",
-            }
-
-        student_role = get_student_role(student)
-        student_name = student.get("full_name") or "Unknown Student"
-
-        if student_role not in allowed_during_lockdown:
-            return {
-                "decision": "denied",
-                "severity": "critical",
-                "reason": (
-                    f"{student_name} attempted access to {zone_name} during emergency lockdown. "
-                    f"Reason: {lockdown_reason}."
-                ),
-                "alert_type": "EMERGENCY_LOCKDOWN_ACCESS_DENIED",
-            }
 
     # 2. Time-based restriction
     if not is_now_within_window(start_time, end_time):

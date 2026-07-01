@@ -258,7 +258,7 @@ def process_rfid_event(event: dict[str, Any]) -> dict[str, Any]:
     )
 
     geofences = get_geofences_for_reader(reader_id)
-    lockdown = get_emergency_lockdown_status(organization_id)
+    
 
     if not geofences:
         access_log_id = insert_access_log(
@@ -292,7 +292,7 @@ def process_rfid_event(event: dict[str, Any]) -> dict[str, Any]:
     decisions = []
 
     for geofence in geofences:
-        result = evaluate_access_rule(student, geofence, lockdown)
+        result = evaluate_access_rule(student, geofence)
 
         access_log_id = insert_access_log(
             detection_event_id=detection_event_id,
