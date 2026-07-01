@@ -176,6 +176,7 @@ def process_rfid_event(event: dict[str, Any]) -> dict[str, Any]:
     reader = get_reader_by_code(reader_code)
     student = get_student_by_tag_uid(tag_uid)
     
+    
 
     if not reader:
         detection_event_id = insert_detection_event(
