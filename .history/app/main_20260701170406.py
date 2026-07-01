@@ -69,6 +69,7 @@ async def root():
 
 
 
+
 if __name__ == "__main__":
     uvicorn.run(
         "app.main:app",

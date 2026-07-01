@@ -131,13 +131,13 @@ class RGSMSimulator:
         }
 
     async def send_event(self, event: dict):
-        try:
-            await asyncio.get_running_loop().run_in_executor(
-                None,
-                lambda: process_rfid_event(event),
-            )
-        except Exception as exc:
-            print(f"Event processing failed: {exc}")
+    try:
+        await asyncio.get_running_loop().run_in_executor(
+            None,
+            lambda: process_rfid_event(event),
+        )
+    except Exception as exc:
+        print(f"Event processing failed: {exc}")
 
     def stop(self):
         self.is_running = False
